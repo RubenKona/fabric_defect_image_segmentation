@@ -2,7 +2,7 @@ import sys
 import os
 import argparse
 import h5py
-from ..src.image_segmentation import ImageSegmentation
+from image_segmentation import ImageSegmentation
 import numpy as np
 
 def parse_args():
@@ -137,25 +137,34 @@ def main():
                 for i,r in enumerate(training_i):
                     m = int(any_class[r])
                     if n_class_train[m] < min_N_train:
-                        print(f'Placing patch {r} in training class {image_segmentation.defect_labels[m]} : {n_train+1} / {N_train}')
+                        #print(f'Placing patch {r} in training class {image_segmentation.defect_labels[m]} : {n_train+1} / {N_train}')
                         save_chunk_h5(train_outfile,training['patches'][r])
                         n_train += 1
                         n_class_train[m] += 1
                     elif n_class_val[m] < min_N_val:
-                        print(f'Placing patch {r} in validation class {image_segmentation.defect_labels[m]}: {n_val+1} / {N_val}')
+                        #print(f'Placing patch {r} in validation class {image_segmentation.defect_labels[m]}: {n_val+1} / {N_val}')
                         save_chunk_h5(validation_outfile,training['patches'][r])
                         n_val += 1
                         n_class_val[m] += 1
                     elif np.all(np.greater_equal(n_class_train,min_N_train)) and n_train < N_train:
-                        print(f'Placing patch {r} in training class {image_segmentation.defect_labels[m]} : {n_train+1} / {N_train}')
+                        #print(f'Placing patch {r} in training class {image_segmentation.defect_labels[m]} : {n_train+1} / {N_train}')
                         save_chunk_h5(train_outfile,training['patches'][r])
                         n_train += 1
                         n_class_train[m] += 1
                     elif np.all(np.greater_equal(n_class_val,min_N_val)) and n_val < N_val:
-                        print(f'Placing patch {r} in validation class {image_segmentation.defect_labels[m]} : {n_val+1} / {N_val}')
+                        #print(f'Placing patch {r} in validation class {image_segmentation.defect_labels[m]} : {n_val+1} / {N_val}')
                         save_chunk_h5(validation_outfile,training['patches'][r])
                         n_val += 1
                         n_class_val[m] += 1
+
+        # Imprimir resultados finales
+        print('\nFinal training samples per class:')
+        for label, count in zip(image_segmentation.defect_labels, n_class_train):
+            print(f'Class {label}: {count} samples')
+
+        print('\nFinal validation samples per class:')
+        for label, count in zip(image_segmentation.defect_labels, n_class_val):
+            print(f'Class {label}: {count} samples')
 
 def move_existing_training_data(file_path):
     if os.path.isfile(file_path):

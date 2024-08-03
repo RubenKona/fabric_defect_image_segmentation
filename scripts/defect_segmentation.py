@@ -2,7 +2,7 @@ import sys
 import os
 import argparse
 import matplotlib.pyplot as plt
-from ..src.image_segmentation import ImageSegmentation
+from image_segmentation import ImageSegmentation
 import pandas as pd
 
 def parse_args():

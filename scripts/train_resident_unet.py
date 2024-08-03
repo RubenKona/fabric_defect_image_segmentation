@@ -1,8 +1,8 @@
 import sys
 import os
 import argparse
-from ..src.image_segmentation import ImageSegmentation
-
+from image_segmentation import ImageSegmentation
+from tensorflow.python.client import device_lib
 
 
 
@@ -23,6 +23,8 @@ def main():
     args = parse_args()
 
     os.makedirs(args.data_path, exist_ok=True)
+
+    print(device_lib.list_local_devices())
     
     image_segmentation = ImageSegmentation(args.starting_model,mode=args.preprocess,lr=args.lr,spatial_attention=args.spatial_attention)
 

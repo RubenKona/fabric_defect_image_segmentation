@@ -1,0 +1,16 @@
+python -m prepare_training_data --preprocess v2 --image-dirs '../aitexdataset/NODefect_images' --mask-dirs '../aitexdataset/Mask_images' --training-folder '../aitexdataset/data/training_data/'
+
+python -m train_resident_unet --preprocess v2 --data-path '../models' --training-data '../aitexdataset/data/training_data/training_patches_pv2.h5' --validation-data '../aitexdataset/data/training_data/validation_patches_pv2.h5' --spatial-attention
+
+python -m defect_segmentation --model '../models/final_model_v2.weights.h5' --image '../aitexdataset/Defect_images/0003_002_00.png' --save-label-mask --save-logits-map --results-folder '../aitexdataset/results' --reports-folder '../aitexdataset/reports'
+
+python -m defect_segmentation --model '../original_models/120epoch_final_model_weights_v2.h5' --image '../aitexdataset/Defect_images' --save-label-mask --save-logits-map --save-reports --results-folder '../aitexdataset/results120' --reports-folder '../aitexdataset/reports120'
+python -m defect_segmentation --model '../original_models/30epoch_final_model_weights_v2.h5' --image '../aitexdataset/Defect_images' --save-label-mask --save-logits-map --save-reports --results-folder '../aitexdataset/results30' --reports-folder '../aitexdataset/reports30'
+
+python -m defect_segmentation --model '../original_models/120epoch_final_sa_model_weights_v2.h5' --image '../aitexdataset/Defect_images' --save-label-mask --save-logits-map --save-reports --results-folder '../aitexdataset/results120sa' --reports-folder '../aitexdataset/reports120sa'
+python -m defect_segmentation --model '../original_models/30epoch_final_sa_model_weights_v2.h5' --image '../aitexdataset/Defect_images' --save-label-mask --save-logits-map --save-reports --results-folder '../aitexdataset/results300sa' --reports-folder '../aitexdataset/reports300sa'
+
+python -m assess_segmentation_performance --model '../original_models/120epoch_final_model_weights_v2.h5' --image '../aitexdataset/Defect_images' --mask '../aitexdataset/Mask_images'  --save-label-mask --save-logits-map --save-reports --results-folder '../aitexdataset/results120perf' --reports-folder '../aitexdataset/reports120perf'
+python -m assess_segmentation_performance --model '../original_models/120epoch_final_sa_model_weights_v2.h5' --image '../aitexdataset/Defect_images' --mask '../aitexdataset/Mask_images'  --save-label-mask --save-logits-map --save-reports --results-folder '../aitexdataset/results120saperf' --reports-folder '../aitexdataset/reports120saperf'
+
+python -m defect_segmentation --model '../original_models/120epoch_final_model_weights_v2.h5' --image '../avidataset/Rollo1A' --save-label-mask --save-logits-map --save-reports --results-folder '../avidataset/results120' --reports-folder '../avidataset/reports120'
